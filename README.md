@@ -14,10 +14,26 @@ The APIHUB API Visitor automatically identifies and marks self-references in sch
 ## Usage
 ```ts
 import { OpenApiWalker } from '@netcracker/qubership-apihub-api-visitor'
+import { denormalize, normalize } from '@netcracker/qubership-apihub-api-unifier'
+import type { DenormalizeOptions, NormalizeOptions } from '@netcracker/qubership-apihub-api-unifier'
 
 const walker = new OpenApiWalker();
-const normalizedOpenApiDocument = { /* Normalized OpenAPI document - a Dereferenced and Bundled version of OpenAPI spec, where all $ref references are resolved. */ };
-walker.walkPathsOnNormalizedSource(normalizedOpenApiDocument, {
+
+/* Normalized OpenAPI document - a Dereferenced and Bundled version of OpenAPI spec, where all $ref references are resolved. */
+const options: NormalizeOptions = {
+  /* Options for normalize */
+}
+const invertOptions: DenormalizeOptions = {
+  /* Options for denormalize */
+}
+
+/* 'normalize' process needed for execution mergeAllOf, resolveRef, dereferencing anyOf and other things for creating
+* Normalized OpenAPI document - a Dereferenced and Bundled version of OpenAPI spec, where all $ref references are resolved. */
+const normalized = normalize(operationData, options)
+/* 'denormalize' - reverse process. ResolveRef and mergeAllOf will be executed */
+const resultOpenApiDocument = denormalize(normalized, invertOptions)
+
+walker.walkPathsOnNormalizedSource(resultOpenApiDocument, {
   // Handlers
   responseStart: ({ responseCode }) => {
     /* Do something */
