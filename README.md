@@ -13,8 +13,10 @@ The APIHUB API Visitor automatically identifies and marks self-references in sch
 
 ## Usage
 ```ts
+import { OpenApiWalker } from '@netcracker/qubership-apihub-api-visitor'
+
 const walker = new OpenApiWalker();
-const normalizedOpenApiDocument = { /* Normalized OpenAPI document */ };
+const normalizedOpenApiDocument = { /* Normalized OpenAPI document - a Dereferenced and Bundled version of OpenAPI spec, where all $ref references are resolved. */ };
 walker.walkPathsOnNormalizedSource(normalizedOpenApiDocument, {
   // Handlers
   responseStart: ({ responseCode }) => {
