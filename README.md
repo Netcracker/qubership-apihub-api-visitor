@@ -19,21 +19,36 @@ import type { DenormalizeOptions, NormalizeOptions } from '@netcracker/qubership
 
 const walker = new OpenApiWalker();
 
-/* Normalized OpenAPI document - a Dereferenced and Bundled version of OpenAPI spec, where all $ref references are resolved. */
 const options: NormalizeOptions = {
-  /* Options for normalize */
+  resolveRef: true,
+  validate: true,
+  mergeAllOf: true,
+  unify: true,
+  liftCombiners: false,
+  allowNotValidSyntheticChanges: true,
+  originsAlreadyDefined: false,
+  /* Add additional options if necessary */
 }
 const invertOptions: DenormalizeOptions = {
-  /* Options for denormalize */
+  ...options,
+  originsAlreadyDefined: true,
+  /* Add additional options if necessary */
 }
 
-/* 'normalize' process needed for execution mergeAllOf, resolveRef, dereferencing anyOf and other things for creating
-* Normalized OpenAPI document - a Dereferenced and Bundled version of OpenAPI spec, where all $ref references are resolved. */
-const normalized = normalize(operationData, options)
-/* 'denormalize' - reverse process. ResolveRef and mergeAllOf will be executed */
-const resultOpenApiDocument = denormalize(normalized, invertOptions)
+/* 
+* Normalized OpenAPI document - a Dereferenced and Bundled version of OpenAPI spec, where all $ref references are resolved.
+* 
+* 'normalize' - process resolves refs, merges allOf-s, sets default values according to specification, 
+* unwrap system "anyOf" (type "any") and so on. Some of the stages are revertable, some not. 
+* As a result we get completely "normalized" OpenAPI specification 
+* which has transparent structure and can be easily matched with another normalized OpenAPI specification. 
+* 
+* 'denormalize - revertable things will be reverted (e.g. defaults, unified system anyOf-s), but resolved refs and merge allOf-s will be saved. 
+* So it results to original specification with resolved refs and merged allOf-s.'
+*/
+const normalizedOpenApiDocument = denormalize(normalize(operationData, options), invertOptions)
 
-walker.walkPathsOnNormalizedSource(resultOpenApiDocument, {
+walker.walkPathsOnNormalizedSource(normalizedOpenApiDocument, {
   // Handlers
   responseStart: ({ responseCode }) => {
     /* Do something */
