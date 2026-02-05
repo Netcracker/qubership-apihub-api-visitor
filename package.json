@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@netcracker/qubership-apihub-json-crawl": "next",
-    "@netcracker/qubership-apihub-api-unifier": "next"
+    "@netcracker/qubership-apihub-api-unifier": "bugfix-directive-declaration-lost"
   },
   "devDependencies": {
     "@netcracker/qubership-apihub-npm-gitflow": "3.1.0",
