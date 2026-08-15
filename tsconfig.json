@@ -2,6 +2,14 @@
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
     "resolveJsonModule": true,
+    /* TypeScript 6 defaults "types" to [] rather than every package under typeRoots. */
+    "types": ["node", "jest"],
+    /* TypeScript 6 requires rootDir to be explicit alongside outDir (TS5011). */
+    "rootDir": "./",
+    /* TS 6 reports moduleResolution:node / baseUrl as deprecated (TS5107/TS5101);
+       both still function through 6.x. Changing resolution strategy would change which
+       files resolve, so that belongs with the TypeScript 7 migration. */
+    "ignoreDeprecations": "6.0",
     /* Basic Options */
     // "incremental": true,                   /* Enable incremental compilation */
     "target": "ES6",
